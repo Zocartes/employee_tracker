@@ -54,4 +54,22 @@ const runSearch = () => {
       console.table(res);
       runSearch();
     });
+};
+
+const showRoles = () => {
+  const query =
+    'SELECT * FROM role';
+  connection.query(query, (err, res) => {
+    console.table(res);
+    runSearch();
+  });
+};
+
+const showEmployees = () => {
+  const query =
+    'SELECT * FROM employee';
+  connection.query(query, (err, res) => {
+    console.table(res);
+    runSearch();
+  });
   }; 
