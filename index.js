@@ -246,7 +246,7 @@ const empManager = (userSelectedEmp) => {
               runQuestions();
             }
           );
-  
+        });
     });
   };
 
