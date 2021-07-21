@@ -14,10 +14,10 @@ const connection = mysql.createConnection({
 
 connection.connect((err) => {
     if (err)throw err;
-    runSearch();
+    runQuestions();
 });
 
-const runSearch = () => {
+const runQuestions = () => {
     inquirer
     .prompt({
       name: 'action',
@@ -27,6 +27,9 @@ const runSearch = () => {
         "View all departments",
         "View all roles",
         "View all employees",
+        "Add new department",
+        "Add new role",
+        "Add new employee",
   
       ],
     })
@@ -41,10 +44,51 @@ const runSearch = () => {
           break;
   
         case "View all employees":
-            showEmployees();
-            break;
+          showEmployees();
+          break;
+            
+        case "Add new department":
+          addDept();
+          break;
+
+        case "Add new role":
+          addRole();
+          break;
+
+        case "Add new employee":
+          addEmployee();
+          break;
       }
     });
+  };
+
+  const addDept = () => {
+    inquirer
+    .prompt({
+      name: 'deptName',
+      type: 'input',
+      message: "What is the departments name?",
+    })
+    .then((userAnswer) => {
+  
+      console.log('Inserting a new department...\n');
+      const query = connection.query(
+        'INSERT INTO department SET ?',
+        {
+          name: userAnswer.deptName,
+        },
+        (err, res) => {
+          if (err) throw err;
+          console.log(`${res.affectedRows} department inserted!\n`);
+          // Call runQuestions() AFTER the INSERT completes
+          runQuestions();
+        }
+      );
+      // logs the actual query being run
+      console.log(query.sql);
+  
+    })
+  
   };
   
   const showDepts = () => {
@@ -52,7 +96,7 @@ const runSearch = () => {
       'SELECT * FROM department';
     connection.query(query, (err, res) => {
       console.table(res);
-      runSearch();
+      runQuestions();
     });
 };
 
@@ -61,7 +105,7 @@ const showRoles = () => {
     'SELECT * FROM role';
   connection.query(query, (err, res) => {
     console.table(res);
-    runSearch();
+    runQuestions();
   });
 };
 
@@ -70,6 +114,6 @@ const showEmployees = () => {
     'SELECT * FROM employee';
   connection.query(query, (err, res) => {
     console.table(res);
-    runSearch();
+    runQuestions();
   });
   }; 
