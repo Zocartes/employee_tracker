@@ -25,3 +25,22 @@ CREATE TABLE employee (
     FOREIGN KEY (role_id) REFERENCES role (role_id)
     FOREIGN KEY (manager_id) REFERENCES employee_id (employee_id)
 );
+
+USE trackerDB;
+--Creating departments
+INSERT INTO department (name)
+VALUES ("Human Resources"), ("Development"), ("Sales");
+
+
+--Creating roles for departments
+INSERT INTO role (title, salary, department_id)
+VALUES ("Manager", 100000, 1), ("HR REPRESENTATIVE", 80000, 1), 
+("Dev", 90000, 2), ("Lead Developer", 120000, 2), 
+("Lead Sales Rep", 100000, 3), ("Sales Rep", 80000, 3);
+
+
+--Creating employees
+INSERT INTO employee (first_name, last_name, role_id)
+VALUES ("Gracie", "Dingles", 1), ("Andres", "Molestina", 2),
+ ("Max", "Molestina", 4), ("Santos", "Quinto", 3), 
+ ("Martha", "Quinto", 5), ("Angel", "Alvarado", 6); 
