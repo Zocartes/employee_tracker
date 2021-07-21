@@ -140,7 +140,8 @@ const empManager = (userSelectedEmp) => {
     let employees = [];
     let employeeNames = [];
     // slecting all employees to use in inquirer prompt
-    let queryEmp = "SELECT employee_id, CONCAT(first_name, ' ', last_name) AS full_name FROM employee";
+    let queryEmp =
+    "SELECT employee_id, CONCAT(first_name, ' ', last_name) AS full_name FROM employee";
     connection.query(queryEmp, (err, res) => {
       for (var i = 0; i < res.length; i++) {
         employees.push(res[i]);
@@ -158,15 +159,14 @@ const empManager = (userSelectedEmp) => {
           employees.forEach((employee) => {
             if (employee.full_name.includes(userChoice.newManager)) {
               userSelectedManager = employee.employee_id;
-            }; 
+            } 
           });
           //gets the id of the manager based on the user selection
           employees.forEach((employee) => {
             if (employee.full_name.includes(userSelectedEmp)) {
               userSelectedEmpId = employee.employee_id;
-            }; 
+            } 
           });
-  
   
           console.log("Updating employee manager...\n");
           // updating employee manager id
@@ -187,11 +187,9 @@ const empManager = (userSelectedEmp) => {
               runQuestions();
             }
           );
-  
         });
     });
   };
-  
   
   // ----------------------------UPDATE EMPLOYEE (ROLE)-------------------------------
 
@@ -355,7 +353,7 @@ const empManager = (userSelectedEmp) => {
 const addEmployee = () => {
     let roles = [];
     let employees = [];
-    let employeeNames = [];
+    let employeeNames = ["None"];
   
     // slecting all roles to use in inquirer prompt
     let queryRole = "SELECT title FROM role";
@@ -408,7 +406,7 @@ const addEmployee = () => {
           },
         ])
         .then((userAnswer) => {            
-      // Getting the title of the role based on user selection
+      // Getting the id of the role based on user selection
       let userSelection = userAnswer.empRole;
       connection.query(
         `SELECT role_id FROM role WHERE title = "${userSelection}"`,
@@ -420,6 +418,8 @@ const addEmployee = () => {
           employees.forEach((employee) => {
             if (employee.full_name.includes(userAnswer.empManager)) {
               userAnswer.empManager = employee.employee_id;
+            } else if (userAnswer.empManager === "None") {
+                userAnswer.empManager = null;
             }
           });
 
