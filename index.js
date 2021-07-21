@@ -29,6 +29,9 @@ const runQuestions = () => {
           "Add new role",
           "Add new employee",
           "Update employee",
+          "Delete department",
+          "Delete role",
+          "Delete employee",
         ],
       })
 
@@ -63,9 +66,67 @@ const runQuestions = () => {
         case "Update employee":
             updateEmployee();
             break;
+            
+        case "Delete department":
+            deleteDept();
+            break;
+  
+          case "Update role":
+            deleteRole();
+            break;
+  
+          case "Update employee":
+            deleteEmployee();
+            break;
         }
       });
   };
+
+  
+
+  // -----------------------------DELETING DEPARTMENT---------------------------------
+
+  const deleteDept = () => {
+    let departmentNames = [];
+    let departments = [];
+    // selecting all department names to use in inquirer prompt
+    let queryDept = "SELECT name, department_id AS id FROM department";
+    connection.query(queryDept, (err, res) => {
+      for (var i = 0; i < res.length; i++) {
+        departmentNames.push(res[i].name);
+        departments.push(res[i])
+      }
+      inquirer
+        .prompt({
+          name: "dept",
+          type: "list",
+          message: "Which department would you like to delete?",
+          choices: departmentNames,
+        })
+        .then((userChoice) => {
+          //gets the id of the department based on the user selection
+          departments.forEach((department) => {
+            if (department.name.includes(userChoice.dept)) {
+              userChoice.dept = department.id;
+            };
+          });
+          console.log(userChoice.dept)
+          console.log('Deleting department...\n');
+          connection.query(
+            'DELETE FROM department WHERE ?',
+            {
+              department_id: userChoice.dept,
+            },
+            (err, res) => {
+              if (err) throw err;
+              console.log(`${res.affectedRows} department deleted!\n`);
+              // Call runQuestions AFTER the DELETE completes
+              runQuestions();
+            }
+          );
+        })
+    });  
+  }
 
 // -----------------------------UPDATE EMPLOYEE (CHOOSING EMPLOYEE)-----------------
 
@@ -191,7 +252,7 @@ const empManager = (userSelectedEmp) => {
     });
   };
   
-  // ----------------------------UPDATE EMPLOYEE (ROLE)-------------------------------
+// ----------------------------UPDATE EMPLOYEE (ROLE)-------------------------------
 
   const empRole = (userSelectedEmp, employees) => {
     let roleTitles = [];
@@ -373,7 +434,6 @@ const addEmployee = () => {
       }
     });
 
-  
     inquirer
     .prompt([
         {
