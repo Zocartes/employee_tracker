@@ -1,13 +1,14 @@
 const mysql = require('mysql');
 const inquirer = require('inquirer');
-const cTable = require('console_table');
+const cTable = require('console.table');
+require('dotenv').config();
 
 const connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
-    user: "root",
-    password: "",
-    database: "tracker_DB",
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
 });
 
 connection.connect((err) => {
@@ -500,7 +501,7 @@ const addEmployee = () => {
     let employees = [];
     let employeeNames = ["None"];
   
-    // slecting all roles to use in inquirer prompt
+    // selecting all roles to use in inquirer prompt
     let queryRole = "SELECT title FROM role";
     connection.query(queryRole, (err, res) => {
       for (var i = 0; i < res.length; i++) {
@@ -523,7 +524,7 @@ const addEmployee = () => {
         {
             name: "firstName",
             type: "input",
-            message: "What is the employees first name?",
+            message: "What is the employee's first name?",
             validate: function validateFirstName(FirstName) {
               return FirstName !== "";
             },
@@ -531,7 +532,7 @@ const addEmployee = () => {
         {
             name: "lastName",
             type: "input",
-            message: "What is the employees last name?",
+            message: "What is the employee's last name?",
             validate: function validateLastName(LastName) {
               return LastName !== "";
             },
@@ -545,7 +546,7 @@ const addEmployee = () => {
           {
             name: "empManager",
             type: "list",
-            message: "Who is this employees manager?",
+            message: "Who is this employee's manager?",
             choices: employeeNames,
           },
         ])
