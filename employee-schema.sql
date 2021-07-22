@@ -11,6 +11,7 @@ CREATE TABLE role (
     role_id INT NOT NULL AUTO_INCRMENT,
     title VARCHAR(32) NOT NULL,
     salary DECIMAL(10,2) NOT NULL,
+    department_id INT NULL,
     PRIMARY KEY (role_id),
     FOREIGN KEY (department_id) REFERENCES department (department_id)
 );
@@ -19,8 +20,8 @@ CREATE TABLE employee (
     employee_id INT NOT NULL AUTO_INCRMENT,
     first_name VARCHAR(32) NOT NULL,
     last_name VARCHAR(32) NOT NULL,
-    role_id INT NOT NULL,
-    manager_id INT NOT NULL,
+    role_id INT NULL,
+    manager_id INT NULL,
     PRIMARY KEY (employee_id),
     FOREIGN KEY (role_id) REFERENCES role (role_id)
     FOREIGN KEY (manager_id) REFERENCES employee_id (employee_id)
@@ -44,3 +45,8 @@ INSERT INTO employee (first_name, last_name, role_id)
 VALUES ("Gracie", "Dingles", 1), ("Andres", "Molestina", 2),
  ("Max", "Molestina", 4), ("Santos", "Quinto", 3), 
  ("Martha", "Quinto", 5), ("Angel", "Alvarado", 6); 
+
+ 
+ALTER TABLE employee DROP FOREIGN KEY employee_ibfk_1;
+
+ALTER TABLE employee ADD CONSTRAINT employee_ibfk_1 FOREIGN KEY (role_id) REFERENCES role (role_id) ON DELETE SET NULL; 
