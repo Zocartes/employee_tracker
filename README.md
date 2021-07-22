@@ -29,7 +29,7 @@ Employee Tracker manages a company database from simple command line inputs. It 
 To install the required dependencies, please run the following command:
 
 ```
-npm i inquirer, npm i mysql, npm i dotenv, npm console.table
+npm i inquirer , npm i mysql , npm i dotenv , npm i console.table
 ```
 
 ## Usage
