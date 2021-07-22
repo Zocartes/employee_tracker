@@ -14,6 +14,8 @@ Employee Tracker manages a company database from simple command line inputs. It 
 
 - [Installation](#Installation)
 
+- [Video](#video)
+
 - [Usage](#Usage)
 
 - [License](#License)
@@ -26,11 +28,19 @@ Employee Tracker manages a company database from simple command line inputs. It 
 
 ## Installation
 
-To install the required dependencies, please run the following command:
+To install the required dependencies, please run the following commands:
 
 ```
-npm i inquirer , npm i mysql , npm i dotenv , npm i console.table
+npm i inquirer
+npm i mysql
+npm i dotenv
+npm i console.table
+
 ```
+
+## Video
+
+https://youtu.be/ke1jqYRoasw
 
 ## Usage
 
