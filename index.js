@@ -31,7 +31,7 @@ const runQuestions = () => {
           "Update employee",
           "Delete department",
           "Delete role",
-          "Delete employee",
+          "Remove employee",
         ],
       })
 
@@ -75,7 +75,7 @@ const runQuestions = () => {
             deleteRole();
             break;
   
-          case "Delete employee":
+          case "Remove employee":
             deleteEmployee();
             break;
         }
@@ -99,7 +99,7 @@ const runQuestions = () => {
         .prompt({
           name: "emp",
           type: "list",
-          message: "Which employee would you like to delete?",
+          message: "Which employee would you like to remove?",
           choices: employeeNames,
         })
         .then((userChoice) => {
