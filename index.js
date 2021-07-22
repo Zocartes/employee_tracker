@@ -75,13 +75,56 @@ const runQuestions = () => {
             deleteRole();
             break;
   
-          case "Update employee":
+          case "Delete employee":
             deleteEmployee();
             break;
         }
       });
   };
 
+
+// -----------------------------DELETING EMPLOYEE---------------------------------------
+
+  const deleteEmployee = () => {
+    let employees = [];
+    let employeeNames = [];
+    // slecting all employees to use in inquirer prompt
+    let queryEmp = "SELECT CONCAT(first_name, ' ', last_name) AS full_name, employee_id AS id FROM employee;";
+    connection.query(queryEmp, (err, res) => {
+      for (var i = 0; i < res.length; i++) {
+        employees.push(res[i]);
+        employeeNames.push(res[i].full_name);
+      }
+      inquirer
+        .prompt({
+          name: "emp",
+          type: "list",
+          message: "Which employee would you like to delete?",
+          choices: employeeNames,
+        })
+        .then((userChoice) => {
+          //gets the id of the department based on the user selection
+          employees.forEach((employee) => {
+            if (employee.full_name.includes(userChoice.emp)) {
+              userChoice.emp = employee.id;
+            }
+          });
+          console.log("Deleting Employee...\n");
+          connection.query(
+            "DELETE FROM employee WHERE ?",
+            {
+              employee_id: userChoice.emp,
+            },
+            (err, res) => {
+              if (err) throw err;
+              console.log(`${res.affectedRows} employee deleted!\n`);
+              // Call runQuestions AFTER the DELETE completes
+              runQuestions();
+            }
+          );
+        });
+    });
+  };
 
 // -----------------------------DELETING ROLE---------------------------------------
 
@@ -152,7 +195,6 @@ const deleteRole = () => {
               userChoice.dept = department.id;
             }
           });
-          console.log(userChoice.dept)
           console.log("Deleting department...\n");
           connection.query(
             "DELETE FROM department WHERE ?",
